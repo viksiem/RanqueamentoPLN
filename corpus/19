@@ -1,0 +1,8 @@
+Epimetheus - a multi-profile normalizer for epigenomic sequencing data.
+BACKGROUND:
+Exponentially increasing numbers of NGS-based epigenomic datasets in public repositories like GEO constitute an enormous source of information that is invaluable for integrative and comparative studies of gene regulatory mechanisms. One of today's challenges for such studies is to identify functionally informative local and global patterns of chromatin states in order to describe the regulatory impact of the epigenome in normal cell physiology and in case of pathological aberrations. Critically, the most preferred Chromatin ImmunoPrecipitation-Sequencing (ChIP-Seq) is inherently prone to significant variability between assays, which poses significant challenge on comparative studies. One challenge concerns data normalization to adjust sequencing depth variation.
+RESULTS:
+Currently existing tools either apply linear scaling corrections and/or are restricted to specific genomic regions, which can be prone to biases. To overcome these restrictions without any external biases, we developed Epimetheus, a genome-wide quantile-based multi-profile normalization tool for histone modification data and related datasets.
+CONCLUSIONS:
+Epimetheus has been successfully used to normalize epigenomics data in previous studies on X inactivation in breast cancer and in integrative studies of neuronal cell fate acquisition and tumorigenic transformation; Epimetheus is freely available to the scientific community.
+
