@@ -1,13 +1,15 @@
 import preprocessing
 from collections import Counter
 
-
 # TODO atributos DF, IDF, TFXIDT
 
-class MatrizIncidencia():
-    def __init__(self, terms):
-        self.terms = terms
 
-    def receive_data(terms):
-        terms
+class MatrizIncidencia(object):
+    def __init__(self, term,freq):
+        self.term = term
+        self.freq = freq
+
+    def receive_data(term,freq):
+
+        print term, freq
 

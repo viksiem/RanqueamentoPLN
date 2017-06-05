@@ -1,9 +1,11 @@
+from operator import itemgetter
 from nltk.corpus import stopwords
 from nltk.tokenize import sent_tokenize
 from nltk.tokenize import word_tokenize
 from nltk.stem.snowball import SnowballStemmer
 import string
 import os
+from collections import Counter
 import matriz_incidencia as mi
 
 # TODO adicionar nas stopwords palavras como background, conclusions
@@ -51,19 +53,24 @@ def reduce_tostem(doc):
 
 final_docs = []
 for i in os.listdir(os.getcwd()):
-    print i
     path_file = os.path.join(os.getcwd(), i)
     document = read_file(path_file)
     document_sentences = seg_into_senteces(document)
     document_words = seg_into_words(document_sentences)
-    # print 'PALAVRAS DO DOC:', document_words
     final_words = remove_stopwords(document_words)
-    # print 'final words: ',final_words
     punctuation_free = remove_punctuation(final_words)
-    # print 'PUNCTUATION FREE: ',punctuation_free
     stems = reduce_tostem(punctuation_free)
-    # print 'STEMS: ', stems
     final_docs.append(stems)
 
-print final_docs
-mi.MatrizIncidencia(final_docs)
+w, h = 20, 59;
+matrix = [[0 for x in range(w)] for y in range(h)]
+for i in range(0, 20):
+    print i
+    doc_terms = Counter(final_docs[i]).most_common()
+    for p in range(0,59):
+        mi.MatrizIncidencia.receive_data(doc_terms[p][0], doc_terms[p][1])
+    print matrix
+
+#    matriz = [len(doc_terms)][20]
+    #print doc_terms[59] #59 eh o tamanho do menor abstract
+#    matriz[i][i]
