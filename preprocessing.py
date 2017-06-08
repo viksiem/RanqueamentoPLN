@@ -7,6 +7,7 @@ import string
 import os
 #from operator import itemgetter
 from collections import Counter
+import pandas as pd
 
 # TODO adicionar nas stopwords palavras como background, conclusions
 
@@ -89,15 +90,49 @@ for i in os.listdir(os.getcwd()):
     #print(tfs.shape)
     final_docs.append(stems)
 
-for j in range(len(final_docs)):
-    doc_terms = Counter(final_docs[j]).most_common()
-    print 'doc_terms [j]',doc_terms [j]
+terms =[]
+for i in range(len(final_docs)):
+    print 'I: ', i
+    print 'final_docs[',i,'] ',final_docs[i], 'len(final_docs): ',len(final_docs)
+    doc_terms = Counter(final_docs[i]).most_common()
+    print 'doc_terms',doc_terms
+
+    #printa e etribui todos os termos
+    for j in range(len(doc_terms)):
+        print 'doc_terms[',i,']',doc_terms[j]
+        # doc_terms[j][0] acessa so o termo
+        terms.append(doc_terms[j][0])
+        print 'final_terms [',j,']: ',terms[j]
+    matriz = pd.DataFrame(doc_terms)
+    matriz.append(pd.DataFrame(doc_terms[0]))
+print matriz
+
+#print 'final_terms length :',len(final_terms)
+#print 'final terms TOTAL: ',final_terms
+final_terms = set(terms)
+#print 'final_terms length sem duplicadas: ',len(final_terms)
+
+
+
+#matriz = pd.DataFrame(final_terms,os.listdir(os.getcwd()))
+
+
+
+
+
+
+
+    #for j in range(len(final_docs[i])):
+     #   print 'J: ',j
+        #doc_terms = Counter(final_docs[i]).most_common()
+      #  print doc_terms[j][0], doc_terms[j][1]
+    #print 'doc_terms [j]',doc_terms[j]
     #print 'doc_terms[j][j]: ',doc_terms[j][j]
     #print 'j: ',j
     #print 'doc_terms[j]: ',doc_terms[j][j]
-    for i in range(len(final_docs)):
-        print final_docs[j][i]
-        print doc_terms[i][0],doc_terms[i][1]
+    #for i in range(len(final_docs)):
+     #   print final_docs[j][i]
+      #  print doc_terms[i][0],doc_terms[i][1]
     # w, h = 20, 59;
     # matrix = [[0 for x in range(w)] for y in range(h)]
     # for i in range(0, 20):
