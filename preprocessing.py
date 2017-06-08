@@ -1,18 +1,19 @@
-from operator import itemgetter
 from nltk.corpus import stopwords
 from nltk.tokenize import sent_tokenize
 from nltk.tokenize import word_tokenize
+from nltk import pos_tag, WordNetLemmatizer
 from nltk.stem.snowball import SnowballStemmer
 import string
 import os
-from collections import Counter
-import matriz_incidencia as mi
+#from operator import itemgetter
+#from collections import Counter
 
 # TODO adicionar nas stopwords palavras como background, conclusions
 
 stopwords_list = stopwords.words('english')
 punctuation = string.punctuation
 stemmer = SnowballStemmer('english')
+lemmatizer = WordNetLemmatizer()
 os.chdir('/home/meiski/PycharmProjects/RanqueamentoPLN/corpus')
 
 
@@ -42,13 +43,35 @@ def remove_stopwords(doc):
 
 
 def remove_punctuation(doc):
-    punctuation_free = [w for w in final_words if not w in punctuation]
+    punctuation_free = [w for w in doc if not w in punctuation]
     return punctuation_free
 
 
+def tags (doc):
+    postag = pos_tag(doc)
+    return postag
+
+
 def reduce_tostem(doc):
-    doc_stems = [stemmer.stem(w) for w in punctuation_free]
+    doc_stems = [stemmer.stem(w) for w in doc]
     return doc_stems
+
+
+#def lemmas(doc):
+ #   lemmas = []
+  #  for w in doc:
+   #     if w[1].startswith('J'):
+    #        pos = wordnet.ADJ
+     #   elif w[1].startswith('V'):
+      #      pos = wordnet.VERB
+       # elif w[1].startswith('N'):
+       #     pos = wordnet.NOUN
+      #  elif w[1].startswith('R'):
+     #       pos = wordnet.ADV
+    #    else:
+   #         pos = wordnet.NOUN
+  #      lemmas.append(lemmatizer.lemmatize(w[0], pos))
+ #   return lemmas
 
 
 final_docs = []
@@ -60,17 +83,26 @@ for i in os.listdir(os.getcwd()):
     final_words = remove_stopwords(document_words)
     punctuation_free = remove_punctuation(final_words)
     stems = reduce_tostem(punctuation_free)
+    #with_tag = tags(stems)
+    #tfidf_vectorizer = TfidfVectorizer(tokenizer=lemmas(with_tag))
+    #tfs = tfidf_vectorizer.fit_transform(np.array(document_sentences))
+    #print(tfs.shape)
     final_docs.append(stems)
 
-w, h = 20, 59;
-matrix = [[0 for x in range(w)] for y in range(h)]
-for i in range(0, 20):
-    print i
-    doc_terms = Counter(final_docs[i]).most_common()
-    for p in range(0,59):
-        mi.MatrizIncidencia.receive_data(doc_terms[p][0], doc_terms[p][1])
-    print matrix
+    # w, h = 20, 59;
+    # matrix = [[0 for x in range(w)] for y in range(h)]
+    # for i in range(0, 20):
+    #   print i
+    #  doc_terms = Counter(final_docs[i]).most_common()
+#for p in len(doc_term[1]):
+    #   p[].
+    #       mi.MatrizIncidencia.receive_data(doc_terms[p][0], doc_terms[p][1])
+    # print matrix
 
-#    matriz = [len(doc_terms)][20]
-    #print doc_terms[59] #59 eh o tamanho do menor abstract
-#    matriz[i][i]
+    #    matriz = [len(doc_terms)][20]
+    # print doc_terms[59] #59 eh o tamanho do menor abstract
+    #    matriz[i][i]
+
+#for p in range(0,20):
+#    foo ='doc'
+#    doc final_docs[p]
