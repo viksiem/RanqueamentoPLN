@@ -1,20 +1,20 @@
 from nltk.corpus import stopwords
 from nltk.tokenize import sent_tokenize
 from nltk.tokenize import word_tokenize
-from nltk import pos_tag, WordNetLemmatizer
+from nltk import pos_tag
 from nltk.stem.snowball import SnowballStemmer
 import string
 import os
-#from operator import itemgetter
+import numpy
 from collections import Counter
-import pandas as pd
+import math
+#import pandas as pd
 
 # TODO adicionar nas stopwords palavras como background, conclusions
 
 stopwords_list = stopwords.words('english')
 punctuation = string.punctuation
 stemmer = SnowballStemmer('english')
-lemmatizer = WordNetLemmatizer()
 os.chdir('/home/meiski/PycharmProjects/RanqueamentoPLN/corpus')
 
 
@@ -58,21 +58,12 @@ def reduce_tostem(doc):
     return doc_stems
 
 
-#def lemmas(doc):
- #   lemmas = []
-  #  for w in doc:
-   #     if w[1].startswith('J'):
-    #        pos = wordnet.ADJ
-     #   elif w[1].startswith('V'):
-      #      pos = wordnet.VERB
-       # elif w[1].startswith('N'):
-       #     pos = wordnet.NOUN
-      #  elif w[1].startswith('R'):
-     #       pos = wordnet.ADV
-    #    else:
-   #         pos = wordnet.NOUN
-  #      lemmas.append(lemmatizer.lemmatize(w[0], pos))
- #   return lemmas
+def log_tf(doc_frequency):
+    doc_terms_tfl = []
+    for i in range(len(doc_frequency)):
+        doc_terms_tfl[i] = 1 + math.log(doc_frequency[i][1],10)
+        print 'doc_terms_tlf: ',doc_terms_tfl
+    return doc_terms_tfl
 
 
 final_docs = []
@@ -84,69 +75,49 @@ for i in os.listdir(os.getcwd()):
     final_words = remove_stopwords(document_words)
     punctuation_free = remove_punctuation(final_words)
     stems = reduce_tostem(punctuation_free)
-    #with_tag = tags(stems)
-    #tfidf_vectorizer = TfidfVectorizer(tokenizer=lemmas(with_tag))
-    #tfs = tfidf_vectorizer.fit_transform(np.array(document_sentences))
-    #print(tfs.shape)
     final_docs.append(stems)
+
 
 terms =[]
 for i in range(len(final_docs)):
-    print 'I: ', i
-    print 'final_docs[',i,'] ',final_docs[i], 'len(final_docs): ',len(final_docs)
+    #print 'I: ', i
+    #print 'final_docs[',i,'] ',final_docs[i], 'len(final_docs): ',len(final_docs)
     doc_terms = Counter(final_docs[i]).most_common()
-    print 'doc_terms',doc_terms
+    #print 'doc_terms',doc_terms
 
     #printa e etribui todos os termos
     for j in range(len(doc_terms)):
-        print 'doc_terms[',i,']',doc_terms[j]
+        #print 'doc_terms[',i,']',doc_terms[j]
         # doc_terms[j][0] acessa so o termo
         terms.append(doc_terms[j][0])
         print 'final_terms [',j,']: ',terms[j]
-    matriz = pd.DataFrame(doc_terms)
-    matriz.append(pd.DataFrame(doc_terms[0]))
-print matriz
 
-#print 'final_terms length :',len(final_terms)
-#print 'final terms TOTAL: ',final_terms
+#TODO utilizar panda para printar
+
+print 'final_terms length :',len(terms)
+print 'final terms TOTAL: ',terms
 final_terms = set(terms)
-#print 'final_terms length sem duplicadas: ',len(final_terms)
+final_terms = list(final_terms)
+print 'final_terms length sem duplicatas: ',len(final_terms)
+print 'final terms TOTAL sem duplicatas: ',final_terms
+print 'final terms [2]', final_terms[2]
+
+#Faz TF ponderada, IDF e TF-IDF
+tf_ponderada = doc_terms
+for d in range(len(final_docs)):
+    tf_ponderada[i][0] = log_tf(doc_terms)
 
 
 
-#matriz = pd.DataFrame(final_terms,os.listdir(os.getcwd()))
 
 
-
-
-
-
-
-    #for j in range(len(final_docs[i])):
-     #   print 'J: ',j
-        #doc_terms = Counter(final_docs[i]).most_common()
-      #  print doc_terms[j][0], doc_terms[j][1]
-    #print 'doc_terms [j]',doc_terms[j]
-    #print 'doc_terms[j][j]: ',doc_terms[j][j]
-    #print 'j: ',j
-    #print 'doc_terms[j]: ',doc_terms[j][j]
-    #for i in range(len(final_docs)):
-     #   print final_docs[j][i]
-      #  print doc_terms[i][0],doc_terms[i][1]
-    # w, h = 20, 59;
-    # matrix = [[0 for x in range(w)] for y in range(h)]
-    # for i in range(0, 20):
-    #   print i
-    #  doc_terms = Counter(final_docs[i]).most_common()
-#for p in len(doc_term[1]):
-    #   p[].
-    #       mi.MatrizIncidencia.receive_data(doc_terms[p][0], doc_terms[p][1])
-    # print matrix
-
-    #    matriz = [len(doc_terms)][20]
-    # print doc_terms[59] #59 eh o tamanho do menor abstract
-    #    matriz[i][i]
-
-#for p in range(0,20):
-#    foo ='doc'
-#    doc final_docs[p]
+##############################################
+#REMEMBER: Index begins in 0
+#matriz = numpy.arange(1202*21).reshape(1202,21)
+#i popula os termos
+#for i in range(len(final_terms)):
+ #   print 'final_terms ', i,': ', final_terms[i]
+ #   print 'matriz[i][1]: ',matriz[i][1]
+ #   matriz[i][1] = final_terms[i]
+ #   print 'matriz[',i,'][1]', matriz[i][1]
+##############################################
