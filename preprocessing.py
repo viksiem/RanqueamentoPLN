@@ -6,7 +6,7 @@ from nltk.stem.snowball import SnowballStemmer
 import string
 import os
 #from operator import itemgetter
-#from collections import Counter
+from collections import Counter
 
 # TODO adicionar nas stopwords palavras como background, conclusions
 
@@ -89,6 +89,15 @@ for i in os.listdir(os.getcwd()):
     #print(tfs.shape)
     final_docs.append(stems)
 
+for j in range(len(final_docs)):
+    doc_terms = Counter(final_docs[j]).most_common()
+    print 'doc_terms [j]',doc_terms [j]
+    #print 'doc_terms[j][j]: ',doc_terms[j][j]
+    #print 'j: ',j
+    #print 'doc_terms[j]: ',doc_terms[j][j]
+    for i in range(len(final_docs)):
+        print final_docs[j][i]
+        print doc_terms[i][0],doc_terms[i][1]
     # w, h = 20, 59;
     # matrix = [[0 for x in range(w)] for y in range(h)]
     # for i in range(0, 20):
