@@ -59,11 +59,15 @@ def reduce_tostem(doc):
 
 
 def log_tf(doc_frequency):
-    doc_terms_tfl = []
-    for i in range(len(doc_frequency)):
-        doc_terms_tfl[i] = 1 + math.log(doc_frequency[i][1],10)
-        print 'doc_terms_tlf: ',doc_terms_tfl
-    return doc_terms_tfl
+    print doc_frequency
+    print 'len(doc_frequency)', len(doc_frequency)
+    for n in range(len(doc_frequency)):
+        doc_frequency[n] = list(doc_frequency[n])
+        #print 'doc_frequency[n]: ', doc_frequency[n]
+        doc_frequency[n][1] = 1 + math.log(doc_frequency[n][1], 10)
+        #print 'doc_terms[n][1]: ', doc_frequency[n][1]
+
+    return doc_frequency
 
 
 final_docs = []
@@ -77,20 +81,24 @@ for i in os.listdir(os.getcwd()):
     stems = reduce_tostem(punctuation_free)
     final_docs.append(stems)
 
-
 terms =[]
 for i in range(len(final_docs)):
     #print 'I: ', i
     #print 'final_docs[',i,'] ',final_docs[i], 'len(final_docs): ',len(final_docs)
-    doc_terms = Counter(final_docs[i]).most_common()
-    #print 'doc_terms',doc_terms
+    doc_terms = Counter(final_docs[i]).most_common() #final_docs[i] eh um vetor de termos do doc = doc_terms
+    print 'doc_terms',doc_terms
+    tf_ponderada = doc_terms
+    tf_ponderada[i] = log_tf(doc_terms)
+    'print tf_ponderada[i]: ',tf_ponderada[i]
+    'print tf_ponderada: ',tf_ponderada
 
     #printa e etribui todos os termos
     for j in range(len(doc_terms)):
+        #print '         len(doc_terms): ',len(doc_terms)
         #print 'doc_terms[',i,']',doc_terms[j]
         # doc_terms[j][0] acessa so o termo
         terms.append(doc_terms[j][0])
-        print 'final_terms [',j,']: ',terms[j]
+        print 'terms [',j,']: ',terms[j]
 
 #TODO utilizar panda para printar
 
@@ -101,12 +109,6 @@ final_terms = list(final_terms)
 print 'final_terms length sem duplicatas: ',len(final_terms)
 print 'final terms TOTAL sem duplicatas: ',final_terms
 print 'final terms [2]', final_terms[2]
-
-#Faz TF ponderada, IDF e TF-IDF
-tf_ponderada = doc_terms
-for d in range(len(final_docs)):
-    tf_ponderada[i][0] = log_tf(doc_terms)
-
 
 
 
