@@ -7,17 +7,17 @@ import string
 import os
 from collections import Counter
 import math
-import numpy
 import pandas as pd
 
 #TODO metodo pra fazer lista de todos os termos
 #TODO adicionar nas stopwords palavras como background, conclusions
 #TODO utilizar panda para montar e printar matriz
+#TODO gerar matriz de frequencia!
 
 stopwords_list = stopwords.words('english')
 punctuation = string.punctuation
 stemmer = SnowballStemmer('english')
-os.chdir('/home/meiski/PycharmProjects/RanqueamentoPLN/corpus')
+os.chdir('C:\Users\meiski\Desktop\RanqueamentoPLN\corpus')
 
 
 # https://wiki.python.org.br/TudoSobrePythoneUnicode
@@ -60,20 +60,12 @@ def reduce_tostem(doc):
     return doc_stems
 
 
-def log_tf(doc_frequency):
-    for n in range(len(doc_frequency)):
-        doc_frequency[n] = list(doc_frequency[n])
-        doc_frequency[n][1] = ("%.3f" %(1 + math.log(doc_frequency[n][1], 10)))
-
-    return doc_frequency
-
-
 def count_frequencies(doc):
     terms_plus_freq = Counter(doc).most_common()
     return terms_plus_freq
 
 
-#CALCULA O DF DE TODOS OS TERMOS
+# CALCULA O DF DE TODOS OS TERMOS
 def doc_frequency(terms_of_all, docterms):
     df = [0] * len(terms_of_all)
     k = 0
@@ -87,22 +79,31 @@ def doc_frequency(terms_of_all, docterms):
     return df
 
 
+def log_tf(doc_frequency):
+    for n in range(len(doc_frequency)):
+        doc_frequency[n] = list(doc_frequency[n])
+        doc_frequency[n][1] = (float("%.3f" %(1 + math.log(doc_frequency[n][1], 10))))
+
+    return doc_frequency
+
+
 def idf(_df):
     _idf = []
     for p in range(1202):
-        _idf.append(("%.3f" % (math.log(20/_df[p], 10))))
+        _idf.append(float("%.3f" % (math.log(20/_df[p], 10))))
     return _idf
 
 
 def tf_idf(_df, _idf):
     _tf_idf = []
     for i in range(len(_idf)):
-        _tf_idf.append(_df[i] * _idf[i])
+        _tf_idf.append(float("%.3f" % (_df[i] * _idf[i])))
     return _tf_idf
 
 
 #REALIZA TOD@ O PREPROCESSAMENTO DO CORPUS
 docs_terms = []
+terms_plus_logfreq=[]
 for i in range(20):
     path_file = os.path.join(os.getcwd(), (str(i+1)))
     document = read_file(path_file)
@@ -112,27 +113,20 @@ for i in range(20):
     terms_of_eachdoc = remove_punctuation(final_words)
     docs_terms.append(reduce_tostem(terms_of_eachdoc))
     terms_plus_frequencies = count_frequencies(docs_terms[i])
-    terms_plus_logfreq = log_tf(terms_plus_frequencies)
-
+    print terms_plus_frequencies
+    terms_plus_logfreq.append(log_tf(terms_plus_frequencies))
 
 #COLOCA TODOS OS TERMOS EM UM VETOR SEM DUPLICATAS
-terms =[]
+terms = []
 for i in range(len(docs_terms)):
     terms_plus_frequencies = Counter(docs_terms[i]).most_common()
+    print terms_plus_frequencies
     for j in range(len(terms_plus_frequencies)):
         terms.append(terms_plus_frequencies[j][0])
-
 final_terms = list(set(terms))
 DF = doc_frequency(final_terms,docs_terms)
 IDF = idf(DF)
 TFIDF = tf_idf(DF, IDF)
 
-
-############-MATRIZ-#######################
-# REMEMBER: Index begins in 0
-# i eh a linha
-matriz = numpy.arange(1202*21).reshape(1202,21)
-for i in range(len(final_terms)):
-    matriz[i][1] = final_terms[i]
-    print 'matriz[',i,'][0]', matriz[i][0]
-##############################################
+'''dataframe_tf_idf = pd.DataFrame({'Termos':terms})
+print data_frame'''
