@@ -8,9 +8,11 @@ import os
 from collections import Counter
 import math
 import numpy
-#import pandas as pd
+import pandas as pd
 
-# TODO adicionar nas stopwords palavras como background, conclusions
+#TODO metodo pra fazer lista de todos os termos
+#TODO adicionar nas stopwords palavras como background, conclusions
+#TODO utilizar panda para montar e printar matriz
 
 stopwords_list = stopwords.words('english')
 punctuation = string.punctuation
@@ -59,13 +61,9 @@ def reduce_tostem(doc):
 
 
 def log_tf(doc_frequency):
-    #print doc_frequency
-    #print 'len(doc_frequency)', len(doc_frequency)
     for n in range(len(doc_frequency)):
         doc_frequency[n] = list(doc_frequency[n])
-        #print 'doc_frequency[n]: ', doc_frequency[n]
-        doc_frequency[n][1] = 1 + math.log(doc_frequency[n][1], 10)
-        #print 'doc_terms[n][1]: ', doc_frequency[n][1]
+        doc_frequency[n][1] = ("%.3f" %(1 + math.log(doc_frequency[n][1], 10)))
 
     return doc_frequency
 
@@ -75,6 +73,35 @@ def count_frequencies(doc):
     return terms_plus_freq
 
 
+#CALCULA O DF DE TODOS OS TERMOS
+def doc_frequency(terms_of_all, docterms):
+    df = [0] * len(terms_of_all)
+    k = 0
+    for t in terms_of_all:
+        for d in range(len(docterms)):
+            if t in docterms[d]:
+                df[k] += 1
+            else:
+                df[k] += 0
+        k += 1
+    return df
+
+
+def idf(_df):
+    _idf = []
+    for p in range(1202):
+        _idf.append(("%.3f" % (math.log(20/_df[p], 10))))
+    return _idf
+
+
+def tf_idf(_df, _idf):
+    _tf_idf = []
+    for i in range(len(_idf)):
+        _tf_idf.append(_df[i] * _idf[i])
+    return _tf_idf
+
+
+#REALIZA TOD@ O PREPROCESSAMENTO DO CORPUS
 docs_terms = []
 for i in range(20):
     path_file = os.path.join(os.getcwd(), (str(i+1)))
@@ -82,39 +109,30 @@ for i in range(20):
     document_sentences = seg_into_senteces(document)
     document_words = seg_into_words(document_sentences)
     final_words = remove_stopwords(document_words)
-    punctuation_free = remove_punctuation(final_words)
-    docs_terms.append(reduce_tostem(punctuation_free))
+    terms_of_eachdoc = remove_punctuation(final_words)
+    docs_terms.append(reduce_tostem(terms_of_eachdoc))
     terms_plus_frequencies = count_frequencies(docs_terms[i])
-    print 'terms_plus_frequencies',terms_plus_frequencies
-
-#TODO metodo pra fazer lista de todos os termos
-#def list_of_all_terms():
-#terms =[]
+    terms_plus_logfreq = log_tf(terms_plus_frequencies)
 
 
-
+#COLOCA TODOS OS TERMOS EM UM VETOR SEM DUPLICATAS
 terms =[]
 for i in range(len(docs_terms)):
     terms_plus_frequencies = Counter(docs_terms[i]).most_common()
-    #tf_ponderada = doc_terms
-    #tf_ponderada[i] = log_tf(doc_terms)
-    #print 'print tf_ponderada[i]: ',tf_ponderada[i]
-    #print 'print tf_ponderada: ',tf_ponderada
     for j in range(len(terms_plus_frequencies)):
         terms.append(terms_plus_frequencies[j][0])
+
 final_terms = list(set(terms))
+DF = doc_frequency(final_terms,docs_terms)
+IDF = idf(DF)
+TFIDF = tf_idf(DF, IDF)
 
 
-
-
-#TODO utilizar panda para printar matriz
-##############################################
-#REMEMBER: Index begins in 0
-#matriz = numpy.arange(1202*21).reshape(1202,21)
-#i popula os termos
-#for i in range(len(final_terms)):
- #   print 'final_terms ', i,': ', final_terms[i]
- #   print 'matriz[i][1]: ',matriz[i][1]
- #   matriz[i][1] = final_terms[i]
- #   print 'matriz[',i,'][1]', matriz[i][1]
+############-MATRIZ-#######################
+# REMEMBER: Index begins in 0
+# i eh a linha
+matriz = numpy.arange(1202*21).reshape(1202,21)
+for i in range(len(final_terms)):
+    matriz[i][1] = final_terms[i]
+    print 'matriz[',i,'][0]', matriz[i][0]
 ##############################################
