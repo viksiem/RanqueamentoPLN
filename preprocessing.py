@@ -113,15 +113,14 @@ for i in range(20):
     terms_of_eachdoc = remove_punctuation(final_words)
     docs_terms.append(reduce_tostem(terms_of_eachdoc))
     terms_plus_frequencies = count_frequencies(docs_terms[i])
-    print terms_plus_frequencies
     terms_plus_logfreq.append(log_tf(terms_plus_frequencies))
 
 #COLOCA TODOS OS TERMOS EM UM VETOR SEM DUPLICATAS
 terms = []
 for i in range(len(docs_terms)):
-    terms_plus_frequencies = Counter(docs_terms[i]).most_common()
-    print terms_plus_frequencies
-    for j in range(len(terms_plus_frequencies)):
+    #terms_plus_frequencies = Counter(docs_terms[i]).most_common()
+    #print terms_plus_frequencies
+    for j in range(len(terms_plus_frequencies[i])):
         terms.append(terms_plus_frequencies[j][0])
 final_terms = list(set(terms))
 DF = doc_frequency(final_terms,docs_terms)
