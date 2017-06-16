@@ -1,13 +1,11 @@
 from nltk.corpus import stopwords
 from nltk.tokenize import sent_tokenize
 from nltk.tokenize import word_tokenize
-from nltk import pos_tag
 from nltk.stem.snowball import SnowballStemmer
 import string
 import os
 from collections import Counter
 import math
-import pandas as pd
 
 # TODO metodo pra fazer lista de todos os termos
 # TODO adicionar nas stopwords palavras como background, conclusions
@@ -53,11 +51,6 @@ def remove_punctuation(doc):
     return punctuation_free
 
 
-def tags(doc):
-    postag = pos_tag(doc)
-    return postag
-
-
 def reduce_tostem(doc):
     doc_stems = [stemmer.stem(w) for w in doc]
     return doc_stems
@@ -70,17 +63,16 @@ def count_frequencies(doc):
 
 # CALCULA O DF DE TODOS OS TERMOS
 # --OK
-def doc_frequency(terms_of_all, docterms):  # docterms = 20, terms of all = 1202
+def doc_frequency(_terms_of_all, _docterms):  # docterms = 20, terms of all = 1202
     df = []
-    for t in terms_of_all:  # t = algum termo
+    for t in _terms_of_all:  # t = algum termo
         tmp = 0
-        for d in range(len(docterms)):
-            if t in docterms[d]:
+        for d in range(len(_docterms)):
+            if t in _docterms[d]:
                 tmp += 1
             else:
                 tmp += 0
         # end for
-
         df.append(tmp)
     # end for
 
@@ -91,11 +83,10 @@ def log_tf(_doc_frequency):
     for n in range(len(_doc_frequency)):
         _doc_frequency[n] = list(_doc_frequency[n])
         _doc_frequency[n][1] = (float("%.3f" % (1 + math.log(_doc_frequency[n][1], LOG_BASE))))
-
     return _doc_frequency
 
 
-def idf(_df,n_docs):
+def idf(_df, n_docs):
     _idf = []
     for p in range(len(_df)):
         _idf.append(float("%.3f" % (math.log(n_docs / _df[p], LOG_BASE))))
@@ -110,39 +101,18 @@ def tf_idf(_df, _idf):
 
 
 # REALIZA TOD@ O PREPROCESSAMENTO DO CORPUS
-docs_terms = []
-terms_plus_frequencies = []
-terms_plus_logfreq = []
-for i in range(20):
-    path_file = os.path.join(os.getcwd(), (str(i + 1)))
-    document = read_file(path_file)
-    document_sentences = seg_into_senteces(document)
-    document_words = seg_into_words(document_sentences)
-    final_words = remove_stopwords(document_words)
-    terms_of_eachdoc = remove_punctuation(final_words)
-    docs_terms.append(reduce_tostem(terms_of_eachdoc))
-    terms_plus_frequencies.append(count_frequencies(docs_terms[i]))
-    print 'terms_plus_frequencies ', terms_plus_frequencies[i]
-    terms_plus_logfreq.append(log_tf(terms_plus_frequencies[i]))
-
-#def split_in_terms()
+   # terms_plus_frequencies.append(count_frequencies(docs_terms[i]))
+   # terms_plus_logfreq.append(log_tf(terms_plus_frequencies[i]))
 
 
-# COLOCA TODOS OS TERMOS EM UM VETOR SEM DUPLICATAS
+''' # COLOCA TODOS OS TERMOS EM UM VETOR SEM DUPLICATAS
 terms = []
 for i in range(len(docs_terms)):
 
     for j in range(len(terms_plus_logfreq[i])):
         terms.append(terms_plus_logfreq[i][j][0])
 
-
 final_terms = list(set(terms))
-
 DF = doc_frequency(final_terms, docs_terms)
-
 IDF = idf(DF, len(docs_terms))
-
-TFIDF = tf_idf(DF, IDF)
-
-dataframe_tf_idf = pd.DataFrame({'Termos':terms})
-print dataframe_tf_idf
+TFIDF = tf_idf(DF, IDF)'''
