@@ -9,15 +9,18 @@ from collections import Counter
 import math
 import pandas as pd
 
-#TODO metodo pra fazer lista de todos os termos
-#TODO adicionar nas stopwords palavras como background, conclusions
-#TODO utilizar panda para montar e printar matriz
-#TODO gerar matriz de frequencia!
+# TODO metodo pra fazer lista de todos os termos
+# TODO adicionar nas stopwords palavras como background, conclusions
+# TODO utilizar panda para montar e printar matriz
+# TODO gerar matriz de frequencia!
 
 stopwords_list = stopwords.words('english')
 punctuation = string.punctuation
 stemmer = SnowballStemmer('english')
-os.chdir('C:\Users\meiski\Desktop\RanqueamentoPLN\corpus')
+
+# para o win: os.chdir('C:\Users\meiski\Desktop\RanqueamentoPLN\corpus')
+os.chdir('/home/meiski/PycharmProjects/RanqueamentoPLN/corpus')
+LOG_BASE = 10
 
 
 # https://wiki.python.org.br/TudoSobrePythoneUnicode
@@ -50,7 +53,7 @@ def remove_punctuation(doc):
     return punctuation_free
 
 
-def tags (doc):
+def tags(doc):
     postag = pos_tag(doc)
     return postag
 
@@ -66,39 +69,36 @@ def count_frequencies(doc):
 
 
 # CALCULA O DF DE TODOS OS TERMOS
-def doc_frequency(terms_of_all, docterms): #docterms = 20, terms of all = 1202
-    df = [0] * 1202
-    print len(df), type(df)
-    print 'len(terms_of_all): ',len(terms_of_all)
-    k = 0
-    for t in terms_of_all:
+# --OK
+def doc_frequency(terms_of_all, docterms):  # docterms = 20, terms of all = 1202
+    df = []
+    for t in terms_of_all:  # t = algum termo
         tmp = 0
         for d in range(len(docterms)):
-            if t in docterms[d]: #se estiver no primeiro documento
+            if t in docterms[d]:
                 tmp += 1
-                print 'yes', tmp
             else:
                 tmp += 0
-                print 'no ---', tmp
+        # end for
+
         df.append(tmp)
-        print 'df[',k,'] ', df[k]
-        k += 1
+    # end for
+
     return df
 
 
-def log_tf(doc_frequency):
-    for n in range(len(doc_frequency)):
-        doc_frequency[n] = list(doc_frequency[n])
-        doc_frequency[n][1] = (float("%.3f" %(1 + math.log(doc_frequency[n][1], 10))))
+def log_tf(_doc_frequency):
+    for n in range(len(_doc_frequency)):
+        _doc_frequency[n] = list(_doc_frequency[n])
+        _doc_frequency[n][1] = (float("%.3f" % (1 + math.log(_doc_frequency[n][1], LOG_BASE))))
 
-    return doc_frequency
+    return _doc_frequency
 
 
-def idf(_df):
+def idf(_df,n_docs):
     _idf = []
-    for p in range(1202):
-        print len(_df)
-        _idf.append(float("%.3f" % (math.log(20/_df[p], 10))))
+    for p in range(len(_df)):
+        _idf.append(float("%.3f" % (math.log(n_docs / _df[p], LOG_BASE))))
     return _idf
 
 
@@ -109,37 +109,40 @@ def tf_idf(_df, _idf):
     return _tf_idf
 
 
-#REALIZA TOD@ O PREPROCESSAMENTO DO CORPUS
+# REALIZA TOD@ O PREPROCESSAMENTO DO CORPUS
 docs_terms = []
+terms_plus_frequencies = []
 terms_plus_logfreq = []
 for i in range(20):
-    path_file = os.path.join(os.getcwd(), (str(i+1)))
+    path_file = os.path.join(os.getcwd(), (str(i + 1)))
     document = read_file(path_file)
     document_sentences = seg_into_senteces(document)
     document_words = seg_into_words(document_sentences)
     final_words = remove_stopwords(document_words)
     terms_of_eachdoc = remove_punctuation(final_words)
     docs_terms.append(reduce_tostem(terms_of_eachdoc))
-    terms_plus_frequencies = count_frequencies(docs_terms[i])
-    print 'terms_plus_frequencies ',terms_plus_frequencies
-    terms_plus_logfreq.append(log_tf(terms_plus_frequencies))
+    terms_plus_frequencies.append(count_frequencies(docs_terms[i]))
+    print 'terms_plus_frequencies ', terms_plus_frequencies[i]
+    terms_plus_logfreq.append(log_tf(terms_plus_frequencies[i]))
+
+#def split_in_terms()
+
 
 # COLOCA TODOS OS TERMOS EM UM VETOR SEM DUPLICATAS
 terms = []
 for i in range(len(docs_terms)):
 
-    print 'len terms_plus_logfreq[i]: ', len(terms_plus_logfreq[i])
-    #ESSE FOR TÁ ERRADO ELE TEM QUE IR ATÉ O Nº DE TERMOS QUE O DOC POSSUI
     for j in range(len(terms_plus_logfreq[i])):
-        print j
-        print 'terms_plus_frequencies[j][0] :', terms_plus_logfreq[j][0]
-        terms.append(terms_plus_logfreq[j][0])
-    print 'terms: ',terms
+        terms.append(terms_plus_logfreq[i][j][0])
+
+
 final_terms = list(set(terms))
-DF = doc_frequency(final_terms,docs_terms)
-print 'DF: ', DF
-IDF = idf(DF)
+
+DF = doc_frequency(final_terms, docs_terms)
+
+IDF = idf(DF, len(docs_terms))
+
 TFIDF = tf_idf(DF, IDF)
 
-'''dataframe_tf_idf = pd.DataFrame({'Termos':terms})
-print data_frame'''
+dataframe_tf_idf = pd.DataFrame({'Termos':terms})
+print dataframe_tf_idf
