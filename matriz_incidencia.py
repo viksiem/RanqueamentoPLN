@@ -4,7 +4,7 @@ import preprocessing as pp
 
 docs_terms =[]
 terms = []
-#terms_plus_frequencies = []
+terms_plus_frequencies = []
 #terms_plus_logfreq = []
 for i in range(20):
     path_file = os.path.join(os.getcwd(), (str(i + 1)))
@@ -14,10 +14,24 @@ for i in range(20):
     words = pp.remove_stopwords(document_words)
     terms_of_eachdoc = pp.remove_punctuation(words)
     docs_terms.append(pp.reduce_tostem(terms_of_eachdoc))
+
     for j in range(len(docs_terms[i])):
         terms.append(docs_terms[i][j])
 
-final_terms = list(set(terms))
+    final_terms = list(set(terms))
+    terms_plus_frequencies.append(pp.count_frequencies(docs_terms[i]))
+
+tf = []
+for p in range(20):
+    print 'len(terms_plus_frequencies[p])', len(terms_plus_frequencies[p])
+    tf.append(pp.term_frequency(final_terms, terms_plus_frequencies[p]))
+    print 'len tf ', len(tf[p])
+    print len(tf)
+    print tf
+
+
+
+
 
 # dataframe_tf_idf = pd.DataFrame({'Termos':final_terms})
 # TODO matriz: https://stackoverflow.com/questions/12555323/adding-new-column-to-existing-dataframe-in-python-pandas
