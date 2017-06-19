@@ -2,12 +2,13 @@ import os
 import pandas as pd
 import preprocessing as pp
 
-docs_terms =[]
+docs_terms = []
 terms = []
 terms_plus_frequencies = []
 terms_plus_logfreq = []
 tf = []
 
+# TODO matriz: https://stackoverflow.com/questions/12555323/adding-new-column-to-existing-dataframe-in-python-pandas
 
 for i in range(20):
     path_file = os.path.join(os.getcwd(), (str(i + 1)))
@@ -25,12 +26,20 @@ for i in range(20):
 
     final_terms = list(set(terms))
 
-DF = pp.doc_frequency(final_terms,docs_terms)
+DF = pp.doc_frequency(final_terms, docs_terms)
 IDF = pp.idf(DF, len(docs_terms))
 TF_IDF = pp.tf_idf(DF, IDF, docs_terms, final_terms)
 
 
+df_tfidf = pd.DataFrame(TF_IDF)
 
+df_tfidf['Sum TF-IDF'] = df_tfidf.sum(axis=1)
 
-# dataframe_tf_idf = pd.DataFrame({'Termos':final_terms})
-# TODO matriz: https://stackoverflow.com/questions/12555323/adding-new-column-to-existing-dataframe-in-python-pandas
+list_of_sum = df_tfidf['Sum TF-IDF'].tolist()
+
+for t in range(10):
+    tmp_term = list_of_sum.index(max(list_of_sum))
+    list_of_sum.pop(tmp_term)
+    print 'Termo ', t, 'mais relevante: ', final_terms[tmp_term]
+
+#print sorted(list_of_sum, reverse=True)

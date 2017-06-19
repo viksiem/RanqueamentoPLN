@@ -69,23 +69,6 @@ def log_tf(_doc_frequency):
     return _doc_frequency
 
 
-# UTRL code
-# SETA A FREQUENCIA PARA '0' QUANDO O DOCUMENTO NAO TEM O TERMO
-def term_frequency(terms_of_all, terms_plus_frequencies):  # docterms = 20, terms of all = 1202
-    _terms_plus_frequencies = []
-    for i in range(len(terms_plus_frequencies)):
-        for n, t in enumerate(terms_of_all):  # t = algum termo
-            #print i, n, t
-            if t in terms_plus_frequencies[i]:
-                _terms_plus_frequencies.insert(n, (t, terms_plus_frequencies[i][1]))
-                #print '_terms_plus_frequencies[i] no if', _terms_plus_frequencies[i]
-            else:
-                _terms_plus_frequencies.insert(n, (t, 0))
-                #print '_terms_plus_frequencies[i] no else', _terms_plus_frequencies[i]
-    # end for
-    return _terms_plus_frequencies
-
-
 # CALCULA O DF DE TODOS OS TERMOS
 def doc_frequency(_terms_of_all, _docterms):  # docterms = 20, terms of all = 1202
     df = []
