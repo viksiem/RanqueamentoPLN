@@ -14,6 +14,7 @@ for i in range(20):
     document = pp.read_file(path_file)
     document_sentences = pp.seg_into_senteces(document)
     document_words = pp.seg_into_words(document_sentences)
+    #print document_words
     words = pp.remove_stopwords(document_words)
     terms_of_eachdoc = pp.remove_punctuation(words)
     docs_terms.append(pp.reduce_tostem(terms_of_eachdoc))

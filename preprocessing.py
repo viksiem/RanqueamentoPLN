@@ -16,7 +16,8 @@ _stopwords_list.append('true')
 _stopwords_list.append('without')
 _stopwords_list.append('low')
 _stopwords_list.append('moreover')
-_stopwords_list.append('folding')
+_stopwords_list.append('include')
+_stopwords_list.append('including')
 _stopwords_list.append('de')
 _stopwords_list.append('mixture')
 _stopwords_list.append('annotation')
@@ -74,7 +75,6 @@ def log_tf(_doc_frequency):
     return _doc_frequency
 
 
-# CALCULA O DF DE TODOS OS TERMOS
 def doc_frequency(_terms_of_all, _docterms):  # docterms = 20, terms of all = 1202
     df = []
     for t in _terms_of_all:  # t = algum termo
