@@ -19,18 +19,17 @@ for i in range(20):
     terms_of_eachdoc = pp.remove_punctuation(words)
     docs_terms.append(pp.reduce_tostem(terms_of_eachdoc))
     terms_plus_frequencies.append(pp.count_frequencies(docs_terms[i]))
-    terms_plus_logfreq.append(pp.log_tf(terms_plus_frequencies[i]))
+    log_f = pp.log_tf(terms_plus_frequencies[i])
+    terms_plus_logfreq.append(log_f)
 
-    for j in range(len(docs_terms[i])):
-        terms.append(docs_terms[i][j])
+    for j in range(len(terms_plus_frequencies[i])):
+        terms.append(terms_plus_frequencies[i][j][0])
 
     final_terms = list(set(terms))
 
-
 DF = pp.doc_frequency(final_terms, docs_terms)
 IDF = pp.idf(DF, len(docs_terms))
-TF_IDF = pp.tf_idf(DF, IDF, docs_terms, final_terms)
-
+TF_IDF = pp.tf_idf(terms_plus_logfreq, IDF, docs_terms, final_terms)
 
 df_tfidf = pd.DataFrame(TF_IDF)
 
@@ -38,14 +37,13 @@ df_tfidf['Sum TF-IDF'] = df_tfidf.sum(axis=1)
 
 list_of_sum = df_tfidf['Sum TF-IDF'].tolist()
 
+
 most_relevant = []
-most_pafreq = [] #os mais relevantes com a freq absoluta
+most_pafreq = []  # os mais relevantes com a freq absoluta
 for t in range(MOST_RELEVANT):
     most_relevant.append(list_of_sum.index(max(list_of_sum)))
     list_of_sum.pop(most_relevant[t])
-    # print 'Most relevant', t+1,':', final_terms[most_relevant[t]]
+    #print 'Most relevant', t+1,':', final_terms[most_relevant[t]]
     most_pafreq.append(pt2.absolut_freq(terms_plus_frequencies, final_terms[most_relevant[t]]))
-
-for i in range(len(most_relevant)):
-    commum = pd.DataFrame({final_terms[most_relevant[i]]: most_pafreq[i]})
-    print commum
+    commum = pd.DataFrame({final_terms[most_relevant[t]]: most_pafreq[t]})
+    '''print commum'''

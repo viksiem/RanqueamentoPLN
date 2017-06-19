@@ -16,3 +16,8 @@ IDF = lista de size: 1202 com o inverse of document frequency
 DF e IDF seguem a ordenação de final_terms
 TF_IDF segue a ordenação de final_terms, é um vetor de listas de len(1202) de termos, 
 ....as listas tem len(20) e seguem mesma ordenação dos documentos
+
+**part2**
+most = lista de listas onde most[n[0,1]] é
+        0 = documento
+        1 = frequência

@@ -75,8 +75,7 @@ def count_frequencies(doc):
 def log_tf(_doc_frequency):
     _docfrequency = []
     for n in range(len(_doc_frequency)):
-        _docfrequency.insert(n, list(_doc_frequency[n]))
-        _docfrequency[n].insert(1, (float("%.3f" % (1 + math.log(_doc_frequency[n][1], _LOG_BASE)))))
+        _docfrequency.append((float("%.3f" % (1 + math.log(_doc_frequency[n][1], _LOG_BASE)))))
     return _docfrequency
 
 
@@ -102,14 +101,21 @@ def idf(_df, n_docs):
     return _idf
 
 
-def tf_idf(_df, _idf, _docterms, _final_terms):
+def tf_idf(log, _idf, _docterms, _final_terms):
     _tf_idf = [[] for j in repeat(None, len(_final_terms))]
     for i, term in enumerate(_final_terms):
         for n, doc in enumerate(_docterms):
 
+    #VAI TER QUE PERCORRER O LOG TMB
             if term in doc:
-                _tf_idf[i].append(float("%.3f" % (_df[i] * _idf[i])))
+                logindex = log.index(term)
+                print logindex
+                _tf_idf[i].insert(n, float("%.3f" % (log[logindex] * _idf[i])))
+                #print '     _idf[i]: ',_idf[i]
+                #print '     _df[i]: ', _df[i]
+                #print '_df[i] * _idf[i]: ',_tf_idf[i]
             else:
-                _tf_idf[i].append(0)
+                print i, n
+                _tf_idf[i].insert(n, 0)
 
     return _tf_idf
