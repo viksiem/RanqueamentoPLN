@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import preprocessing as pp
 
-MOST_RELEVANT = 7
+MOST_RELEVANT = 15
 docs_terms = []
 terms = []
 terms_plus_frequencies = []
@@ -40,6 +40,4 @@ list_of_sum = df_tfidf['Sum TF-IDF'].tolist()
 for t in range(MOST_RELEVANT):
     tmp_term = list_of_sum.index(max(list_of_sum))
     list_of_sum.pop(tmp_term)
-    print 'Termo', t+1, 'mais relevante: ', final_terms[tmp_term]
-
-#print sorted(list_of_sum, reverse=True)
+    print 'Most relevant', t+1,':', final_terms[tmp_term]

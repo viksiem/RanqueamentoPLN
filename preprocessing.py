@@ -8,17 +8,25 @@ from collections import Counter
 import math
 from itertools import repeat
 
-
-_stopwords_list = stopwords.words('english')
 _punctuation = string.punctuation
 _stemmer = SnowballStemmer('english')
+_stopwords_list = stopwords.words('english')
+'''Adicao de stopwords'''
+_stopwords_list.append('true')
+_stopwords_list.append('without')
+_stopwords_list.append('low')
+_stopwords_list.append('moreover')
+_stopwords_list.append('folding')
+_stopwords_list.append('de')
+_stopwords_list.append('mixture')
+_stopwords_list.append('annotation')
 
 # no win: os.chdir('C:\Users\meiski\Desktop\RanqueamentoPLN\corpus')
 os.chdir('/home/meiski/PycharmProjects/RanqueamentoPLN/corpus')
 _LOG_BASE = 10
 
 
-# https://wiki.python.org.br/TudoSobrePythoneUnicode
+# ref: https://wiki.python.org.br/TudoSobrePythoneUnicode
 def read_file(i_file):
     i_file = open(i_file)
     data_file = i_file.read()
@@ -40,6 +48,7 @@ def seg_into_words(doc):
 
 def remove_stopwords(doc):
     finalwords = [w for w in doc if not w.lower() in _stopwords_list]
+
     return finalwords
 
 
