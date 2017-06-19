@@ -11,16 +11,7 @@ from itertools import repeat
 _punctuation = string.punctuation
 _stemmer = SnowballStemmer('english')
 _stopwords_list = stopwords.words('english')
-'''Adicao de stopwords'''
-_stopwords_list.append('true')
-_stopwords_list.append('without')
-_stopwords_list.append('low')
-_stopwords_list.append('moreover')
-_stopwords_list.append('include')
-_stopwords_list.append('including')
-_stopwords_list.append('de')
-_stopwords_list.append('mixture')
-_stopwords_list.append('annotation')
+
 
 # no win: os.chdir('C:\Users\meiski\Desktop\RanqueamentoPLN\corpus')
 os.chdir('/home/meiski/PycharmProjects/RanqueamentoPLN/corpus')
@@ -47,7 +38,20 @@ def seg_into_words(doc):
     return words
 
 
+def add_stopwords():
+    _stopwords_list.append('true')
+    _stopwords_list.append('without')
+    _stopwords_list.append('low')
+    _stopwords_list.append('moreover')
+    _stopwords_list.append('include')
+    _stopwords_list.append('including')
+    _stopwords_list.append('de')
+    _stopwords_list.append('mixture')
+    _stopwords_list.append('annotation')
+
+
 def remove_stopwords(doc):
+    add_stopwords()
     finalwords = [w for w in doc if not w.lower() in _stopwords_list]
 
     return finalwords
@@ -69,10 +73,11 @@ def count_frequencies(doc):
 
 
 def log_tf(_doc_frequency):
+    _docfrequency = []
     for n in range(len(_doc_frequency)):
-        _doc_frequency[n] = list(_doc_frequency[n])
-        _doc_frequency[n][1] = (float("%.3f" % (1 + math.log(_doc_frequency[n][1], _LOG_BASE))))
-    return _doc_frequency
+        _docfrequency.insert(n, list(_doc_frequency[n]))
+        _docfrequency[n].insert(1, (float("%.3f" % (1 + math.log(_doc_frequency[n][1], _LOG_BASE)))))
+    return _docfrequency
 
 
 def doc_frequency(_terms_of_all, _docterms):  # docterms = 20, terms of all = 1202

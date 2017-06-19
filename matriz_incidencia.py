@@ -1,4 +1,5 @@
 import os
+import part2 as pt2
 import pandas as pd
 import preprocessing as pp
 
@@ -14,7 +15,6 @@ for i in range(20):
     document = pp.read_file(path_file)
     document_sentences = pp.seg_into_senteces(document)
     document_words = pp.seg_into_words(document_sentences)
-    #print document_words
     words = pp.remove_stopwords(document_words)
     terms_of_eachdoc = pp.remove_punctuation(words)
     docs_terms.append(pp.reduce_tostem(terms_of_eachdoc))
@@ -38,7 +38,9 @@ df_tfidf['Sum TF-IDF'] = df_tfidf.sum(axis=1)
 
 list_of_sum = df_tfidf['Sum TF-IDF'].tolist()
 
+most_relevant = []
 for t in range(MOST_RELEVANT):
-    tmp_term = list_of_sum.index(max(list_of_sum))
-    list_of_sum.pop(tmp_term)
-    print 'Most relevant', t+1,':', final_terms[tmp_term]
+    most_relevant.append(list_of_sum.index(max(list_of_sum)))
+    list_of_sum.pop(most_relevant[t])
+    # print 'Most relevant', t+1,':', final_terms[most_relevant[t]]
+    print pt2.absolut_freq(terms_plus_frequencies, final_terms[most_relevant[t]])
