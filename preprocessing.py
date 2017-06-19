@@ -13,7 +13,7 @@ _stopwords_list = stopwords.words('english')
 _punctuation = string.punctuation
 _stemmer = SnowballStemmer('english')
 
-# para o win: os.chdir('C:\Users\meiski\Desktop\RanqueamentoPLN\corpus')
+# no win: os.chdir('C:\Users\meiski\Desktop\RanqueamentoPLN\corpus')
 os.chdir('/home/meiski/PycharmProjects/RanqueamentoPLN/corpus')
 _LOG_BASE = 10
 
@@ -89,7 +89,7 @@ def idf(_df, n_docs):
 
 
 def tf_idf(_df, _idf, _docterms, _final_terms):
-    _tf_idf = [[] for j in repeat(None, 1202)]
+    _tf_idf = [[] for j in repeat(None, len(_final_terms))]
     for i, term in enumerate(_final_terms):
         for n, doc in enumerate(_docterms):
 
