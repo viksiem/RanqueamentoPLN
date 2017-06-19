@@ -8,10 +8,6 @@ from collections import Counter
 import math
 from itertools import repeat
 
-# TODO metodo pra fazer lista de todos os termos
-# TODO adicionar nas stopwords palavras como background, conclusions
-# TODO utilizar panda para montar e printar matriz
-# TODO gerar matriz de frequencia!
 
 _stopwords_list = stopwords.words('english')
 _punctuation = string.punctuation
@@ -72,7 +68,6 @@ def log_tf(_doc_frequency):
 # CALCULA O DF DE TODOS OS TERMOS
 def doc_frequency(_terms_of_all, _docterms):  # docterms = 20, terms of all = 1202
     df = []
-
     for t in _terms_of_all:  # t = algum termo
         tmp = 0
         for d in range(len(_docterms)):
@@ -80,9 +75,9 @@ def doc_frequency(_terms_of_all, _docterms):  # docterms = 20, terms of all = 12
                 tmp += 1
             else:
                 tmp += 0
-        # end for
+
         df.append(tmp)
-    # end for
+
     return df
 
 

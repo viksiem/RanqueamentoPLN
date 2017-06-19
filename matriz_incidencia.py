@@ -8,8 +8,6 @@ terms_plus_frequencies = []
 terms_plus_logfreq = []
 tf = []
 
-# TODO matriz: https://stackoverflow.com/questions/12555323/adding-new-column-to-existing-dataframe-in-python-pandas
-
 for i in range(20):
     path_file = os.path.join(os.getcwd(), (str(i + 1)))
     document = pp.read_file(path_file)
