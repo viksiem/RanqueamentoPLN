@@ -71,12 +71,18 @@ def count_frequencies(doc):
     terms_plus_freq = Counter(doc).most_common()
     return terms_plus_freq
 
-
-def log_tf(_doc_frequency):
-    _docfrequency = [[]]
+def flog_tf(_doc_frequency):
+    f_docfrequency = []
     for n in range(len(_doc_frequency)):
-        _docfrequency.append([_doc_frequency[n][0], (float("%.3f" % (1 + math.log(_doc_frequency[n][1], _LOG_BASE))))])
-    return _docfrequency
+        f_docfrequency.append(float("%.3f" % (1 + math.log(_doc_frequency[n][1], _LOG_BASE))))
+    return f_docfrequency
+
+
+def tlog_tf(_doc_frequency):
+    t_docfrequency = []
+    for n in range(len(_doc_frequency)):
+        t_docfrequency.append(_doc_frequency[n][0])
+    return t_docfrequency
 
 
 def doc_frequency(_terms_of_all, _docterms):  # docterms = 20, terms of all = 1202
@@ -100,22 +106,22 @@ def idf(_df, n_docs):
     return _idf
 
 
-def tf_idf(log, _idf, _docterms, _final_terms):
-    _tf_idf = [[]] #for j in repeat(None, len(_final_terms))]
-    #print log
+#_tf_idf = [[TERMO1[DOC1, DOC2, ...,DOC20], TERMO2[DOC1, DOC2, ...,DOC20]]
+def tf_idf(_log_terms, _log_freq, _idf, _docterms, _final_terms):
+    _tf_idf = [list([])] #for j in repeat(None, len(_final_terms))]
+    # print log
     for i, term in enumerate(_final_terms):
         for n, doc in enumerate(_docterms):
-            #print term, doc
             if term in doc:
-                logindex = log.index(term)
-                #print logindex
-                _tf_idf[i].insert(n, float("%.3f" % (log[logindex] * _idf[i])))
+                termindex = _log_terms[n].index(term)
+                print 'i:',i, 'n:',n
+                _tf_idf[i][n] = float("%.3f" % (_log_freq[termindex] * _idf[i]))
                 #print '     _idf[i]: ',_idf[i]
                 #print '     _df[i]: ', _df[i]
                 #print '_df[i] * _idf[i]: ',_tf_idf[i]
             else:
                 #print len(log[n])
-                #print 'ELSE'
+                # print 'ELSE'
                 _tf_idf[i].insert(n, 0)
 
     return _tf_idf
