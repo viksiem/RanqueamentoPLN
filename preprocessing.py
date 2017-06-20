@@ -13,8 +13,8 @@ _stemmer = SnowballStemmer('english')
 _stopwords_list = stopwords.words('english')
 
 
-# no win: os.chdir('C:\Users\meiski\Desktop\RanqueamentoPLN\corpus')
-os.chdir('/home/meiski/PycharmProjects/RanqueamentoPLN/corpus')
+os.chdir('C:\Users\meiski\Desktop\RanqueamentoPLN\corpus')
+#os.chdir('/home/meiski/PycharmProjects/RanqueamentoPLN/corpus')
 _LOG_BASE = 10
 
 
@@ -73,9 +73,9 @@ def count_frequencies(doc):
 
 
 def log_tf(_doc_frequency):
-    _docfrequency = []
+    _docfrequency = [[]]
     for n in range(len(_doc_frequency)):
-        _docfrequency.append((float("%.3f" % (1 + math.log(_doc_frequency[n][1], _LOG_BASE)))))
+        _docfrequency.append([_doc_frequency[n][0], (float("%.3f" % (1 + math.log(_doc_frequency[n][1], _LOG_BASE))))])
     return _docfrequency
 
 
@@ -88,7 +88,6 @@ def doc_frequency(_terms_of_all, _docterms):  # docterms = 20, terms of all = 12
                 tmp += 1
             else:
                 tmp += 0
-
         df.append(tmp)
 
     return df
@@ -102,20 +101,21 @@ def idf(_df, n_docs):
 
 
 def tf_idf(log, _idf, _docterms, _final_terms):
-    _tf_idf = [[] for j in repeat(None, len(_final_terms))]
+    _tf_idf = [[]] #for j in repeat(None, len(_final_terms))]
+    #print log
     for i, term in enumerate(_final_terms):
         for n, doc in enumerate(_docterms):
-
-    #VAI TER QUE PERCORRER O LOG TMB
+            #print term, doc
             if term in doc:
                 logindex = log.index(term)
-                print logindex
+                #print logindex
                 _tf_idf[i].insert(n, float("%.3f" % (log[logindex] * _idf[i])))
                 #print '     _idf[i]: ',_idf[i]
                 #print '     _df[i]: ', _df[i]
                 #print '_df[i] * _idf[i]: ',_tf_idf[i]
             else:
-                print i, n
+                #print len(log[n])
+                #print 'ELSE'
                 _tf_idf[i].insert(n, 0)
 
     return _tf_idf
