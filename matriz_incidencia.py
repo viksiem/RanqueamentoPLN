@@ -34,6 +34,7 @@ TF_IDF = pp.tf_idf(log_terms, log_freq, IDF, docs_terms, final_terms)
 df_tfidf = pd.DataFrame(TF_IDF)
 
 df_tfidf['Sum TF-IDF'] = df_tfidf.sum(axis=1)
+print df_tfidf
 
 list_of_sum = df_tfidf['Sum TF-IDF'].tolist()
 
@@ -42,7 +43,7 @@ most_pafreq = []  # os mais relevantes com a freq absoluta
 for t in range(MOST_RELEVANT):
     most_relevant.append(list_of_sum.index(max(list_of_sum)))
     list_of_sum.pop(most_relevant[t])
-    # print 'Most relevant', t+1, ':', final_terms[most_relevant[t]]
+    print 'Most relevant', t+1, ':', final_terms[most_relevant[t]]
     most_pafreq.append(pt2.absolut_freq(terms_plus_frequencies, final_terms[most_relevant[t]]))
     commum = pd.DataFrame({final_terms[most_relevant[t]]: most_pafreq[t]})
     '''print commum'''

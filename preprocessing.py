@@ -39,7 +39,7 @@ def seg_into_words(doc):
 
 
 def add_stopwords():
-    _stopwords_list.append('true')
+   # _stopwords_list.append('variants')
     _stopwords_list.append('without')
     _stopwords_list.append('low')
     _stopwords_list.append('moreover')
@@ -108,20 +108,18 @@ def idf(_df, n_docs):
 
 #_tf_idf = [[TERMO1[DOC1, DOC2, ...,DOC20], TERMO2[DOC1, DOC2, ...,DOC20]]
 def tf_idf(_log_terms, _log_freq, _idf, _docterms, _final_terms):
-    _tf_idf = [list([])] #for j in repeat(None, len(_final_terms))]
-    # print log
+    bydocTFIDF =[]
+    _tf_idf = [] #for j in repeat(None, len(_final_terms))]
     for i, term in enumerate(_final_terms):
         for n, doc in enumerate(_docterms):
             if term in doc:
                 termindex = _log_terms[n].index(term)
-                print 'i:',i, 'n:',n
-                _tf_idf[i][n] = float("%.3f" % (_log_freq[termindex] * _idf[i]))
-                #print '     _idf[i]: ',_idf[i]
-                #print '     _df[i]: ', _df[i]
-                #print '_df[i] * _idf[i]: ',_tf_idf[i]
+                bydocTFIDF.append(float("%.3f" % (_log_freq[n][termindex] * _idf[i])))
+
             else:
-                #print len(log[n])
-                # print 'ELSE'
-                _tf_idf[i].insert(n, 0)
+                bydocTFIDF.append(0)
+        tmp = list(bydocTFIDF)
+        _tf_idf.append(tmp)
+        del bydocTFIDF[:]
 
     return _tf_idf
