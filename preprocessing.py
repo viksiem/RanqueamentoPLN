@@ -71,6 +71,7 @@ def count_frequencies(doc):
     terms_plus_freq = Counter(doc).most_common()
     return terms_plus_freq
 
+
 def flog_tf(_doc_frequency):
     f_docfrequency = []
     for n in range(len(_doc_frequency)):
@@ -85,7 +86,7 @@ def tlog_tf(_doc_frequency):
     return t_docfrequency
 
 
-def doc_frequency(_terms_of_all, _docterms):  # docterms = 20, terms of all = 1202
+def doc_frequency(_terms_of_all, _docterms):  # docterms = 20, terms of all = 1194
     df = []
     for t in _terms_of_all:  # t = algum termo
         tmp = 0
