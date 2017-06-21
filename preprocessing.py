@@ -13,8 +13,8 @@ _stemmer = SnowballStemmer('english')
 _stopwords_list = stopwords.words('english')
 
 
-os.chdir('C:\Users\meiski\Desktop\RanqueamentoPLN\corpus')
-#os.chdir('/home/meiski/PycharmProjects/RanqueamentoPLN/corpus')
+#os.chdir('C:\Users\meiski\Desktop\RanqueamentoPLN\corpus')
+os.chdir('/home/meiski/PycharmProjects/RanqueamentoPLN/corpus')
 _LOG_BASE = 10
 
 
@@ -39,14 +39,15 @@ def seg_into_words(doc):
 
 
 def add_stopwords():
-    _stopwords_list.append('variants')
+    #_stopwords_list.append('variants')
+    _stopwords_list.append('e.g.')
     _stopwords_list.append('without')
     _stopwords_list.append('low')
     _stopwords_list.append('moreover')
     _stopwords_list.append('include')
     _stopwords_list.append('including')
     _stopwords_list.append('de')
-    _stopwords_list.append('mixture')
+    #_stopwords_list.append('mixture')
     _stopwords_list.append('annotation')
 
 
@@ -86,12 +87,13 @@ def tlog_tf(_doc_frequency):
     return t_docfrequency
 
 
+# OK
 def doc_frequency(_terms_of_all, _docterms):  # docterms = 20, terms of all = 1194
     df = []
     for t in _terms_of_all:  # t = algum termo
         tmp = 0
-        for d in range(len(_docterms)):
-            if t in _docterms[d]:
+        for d in _docterms:
+            if t in d:
                 tmp += 1
             else:
                 tmp += 0
@@ -100,6 +102,7 @@ def doc_frequency(_terms_of_all, _docterms):  # docterms = 20, terms of all = 11
     return df
 
 
+# OK
 def idf(_df, n_docs):
     _idf = []
     for p in range(len(_df)):
