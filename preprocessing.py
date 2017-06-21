@@ -39,7 +39,7 @@ def seg_into_words(doc):
 
 
 def add_stopwords():
-   # _stopwords_list.append('variants')
+    _stopwords_list.append('variants')
     _stopwords_list.append('without')
     _stopwords_list.append('low')
     _stopwords_list.append('moreover')
@@ -114,13 +114,15 @@ def tf_idf(_log_terms, _log_freq, _idf, _docterms, _final_terms):
     for i, term in enumerate(_final_terms):
         for n, doc in enumerate(_docterms):
             if term in doc:
+                #print 'IF'
                 termindex = _log_terms[n].index(term)
                 bydocTFIDF.append(float("%.3f" % (_log_freq[n][termindex] * _idf[i])))
 
             else:
+                #print 'ELSE'
                 bydocTFIDF.append(0)
-        tmp = list(bydocTFIDF)
-        _tf_idf.append(tmp)
+        #tmp = list(bydocTFIDF)
+        _tf_idf.append(list(bydocTFIDF))
         del bydocTFIDF[:]
 
     return _tf_idf
