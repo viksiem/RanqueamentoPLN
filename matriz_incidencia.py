@@ -1,10 +1,11 @@
 from collections import OrderedDict
 import os
-import part2 as pt2
+import cluster as clus
 import pandas as pd
 import preprocessing as pp
 
 MOST_RELEVANT = 15
+DOC_NEWORDS = 'foreign_words.txt'
 docs_terms = []
 terms = []
 terms_plus_frequencies = []
@@ -37,16 +38,25 @@ df_tfidf = pd.DataFrame(TF_IDF)
 df_tfidf['Sum TF-IDF'] = df_tfidf.sum(axis=1)
 list_of_sum = df_tfidf['Sum TF-IDF'].tolist()
 
+# TODO construcao dos metodos
+# Encontra os termos mais relevantes e gera matriz de frequencia absoluta
 most_relevant = []
 most_pafreq = []  # os mais relevantes com a freq absoluta
 for t in range(MOST_RELEVANT):
-
     most_relevant.append(list_of_sum.index(max(list_of_sum)))
-    print 'Most relevant', t+1, ':', final_terms[most_relevant[t]], list_of_sum[most_relevant[t]]
+    '''print 'Most relevant', t+1, ':', final_terms[most_relevant[t]], list_of_sum[most_relevant[t]]'''
 
-    most_pafreq.append(pt2.absolut_freq(terms_plus_frequencies, final_terms[most_relevant[t]]))
+    most_pafreq.append(clus.absolut_freq(terms_plus_frequencies, final_terms[most_relevant[t]]))
     commum = pd.DataFrame({final_terms[most_relevant[t]]: most_pafreq[t]})
-    print commum
+    '''print commum'''
 
     list_of_sum.pop(most_relevant[t])
     final_terms.pop(most_relevant[t])
+
+
+#Processa os novos termos
+foreign_words = clus.process_new_words(DOC_NEWORDS)
+for i, w in enumerate(foreign_words):
+    if w in final_terms:
+        words_plus_frequencies = clus.absolut_freq(terms_plus_frequencies, w)
+        print w, words_plus_frequencies

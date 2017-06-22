@@ -13,8 +13,8 @@ _stemmer = SnowballStemmer('english')
 _stopwords_list = stopwords.words('english')
 
 
-os.chdir('C:\Users\meiski\Desktop\RanqueamentoPLN\corpus')
-#os.chdir('/home/meiski/PycharmProjects/RanqueamentoPLN/corpus')
+#os.chdir('C:\Users\meiski\Desktop\RanqueamentoPLN\corpus')
+os.chdir('/home/meiski/PycharmProjects/RanqueamentoPLN/corpus')
 _LOG_BASE = 10
 
 
