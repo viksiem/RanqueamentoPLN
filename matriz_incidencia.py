@@ -1,7 +1,7 @@
 from collections import OrderedDict
 import os
 from sklearn.cluster import KMeans
-from sklearn.neighbors import  KNeighborsClassifier
+from sklearn.neighbors import KNeighborsClassifier
 import matplotlib.pyplot as plt
 
 import cluster as clus
@@ -10,8 +10,8 @@ import numpy as np
 import preprocessing as pp
 
 MOST_RELEVANT = 15
-DOC_NEWORDS = 'foreign_words.txt'
-DATA_CSV = 'termos relevantes - TF-IDF.csv'
+DOC_NEWWORDS = 'foreign_words.txt'
+DATA_CSV = 'termos relevantes.csv'
 docs_terms = []
 terms = []
 terms_plus_frequencies = []
@@ -61,7 +61,7 @@ for t in range(MOST_RELEVANT):
 
 
 #Processa os novos termos
-foreign_words = clus.process_new_words(DOC_NEWORDS)
+foreign_words = clus.process_new_words(DOC_NEWWORDS)
 for i, w in enumerate(foreign_words):
     if w in final_terms:
         words_plus_frequencies = clus.absolut_freq(terms_plus_frequencies, w)
@@ -70,10 +70,6 @@ for i, w in enumerate(foreign_words):
 # Clusteriza os documentos
 data = pd.read_csv(DATA_CSV)
 data.as_matrix()
-print data
-data.replace(',','.')
-data = pd.DataFrame(data)
-#data.replace(",",".")
 print data
 model = KMeans(n_clusters=7)
 
