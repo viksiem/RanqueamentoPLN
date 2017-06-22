@@ -59,4 +59,4 @@ foreign_words = clus.process_new_words(DOC_NEWORDS)
 for i, w in enumerate(foreign_words):
     if w in final_terms:
         words_plus_frequencies = clus.absolut_freq(terms_plus_frequencies, w)
-        print w, words_plus_frequencies
+        #print w, words_plus_frequencies

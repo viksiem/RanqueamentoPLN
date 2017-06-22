@@ -23,3 +23,4 @@ TF_IDF segue a ordenação de final_terms, é um vetor de listas de len(1202) de
 most = lista de listas onde most[n[0,1]] é
         0 = documento
         1 = frequência
+words_plus_frequencies = [nº do documento, nº de ocorrências] 
