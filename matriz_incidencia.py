@@ -1,9 +1,12 @@
 from collections import OrderedDict
 import os
+from sklearn.cluster import KMeans
+from sklearn.neighbors import  KNeighborsClassifier
+import matplotlib.pyplot as plt
+
 import cluster as clus
 import pandas as pd
 import numpy as np
-from sklearn.neighbors import  KNeighborsClassifier
 import preprocessing as pp
 
 MOST_RELEVANT = 15
@@ -65,6 +68,14 @@ for i, w in enumerate(foreign_words):
         #print w, words_plus_frequencies
 
 # Clusteriza os documentos
-train = pd.read_csv(DATA_CSV)
-print train.head()
+data = pd.read_csv(DATA_CSV)
+data.as_matrix()
+print data
+data.replace(',','.')
+data = pd.DataFrame(data)
+#data.replace(",",".")
+print data
+model = KMeans(n_clusters=7)
+
+#model.fit(data)
 
