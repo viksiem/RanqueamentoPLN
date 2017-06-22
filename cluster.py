@@ -21,8 +21,3 @@ def process_new_words(terms):
     foreign_words = pp.seg_into_words(foreign_words)
     return foreign_words
 
-'''for n in foreign_words:
-    if n in final_terms:
-        print 'HA CORRESPONDENCIA', n
-    else:
-        print 'O TERMO TEM FREQ 0'''''
