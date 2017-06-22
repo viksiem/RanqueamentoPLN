@@ -2,10 +2,13 @@ from collections import OrderedDict
 import os
 import cluster as clus
 import pandas as pd
+import numpy as np
+from sklearn.neighbors import  KNeighborsClassifier
 import preprocessing as pp
 
 MOST_RELEVANT = 15
 DOC_NEWORDS = 'foreign_words.txt'
+DATA_CSV = 'termos relevantes - TF-IDF.csv'
 docs_terms = []
 terms = []
 terms_plus_frequencies = []
@@ -60,3 +63,8 @@ for i, w in enumerate(foreign_words):
     if w in final_terms:
         words_plus_frequencies = clus.absolut_freq(terms_plus_frequencies, w)
         #print w, words_plus_frequencies
+
+# Clusteriza os documentos
+train = pd.read_csv(DATA_CSV)
+print train.head()
+
