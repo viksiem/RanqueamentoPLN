@@ -21,24 +21,24 @@ tf = []
 
 for i in range(20):
     path_file = os.path.join(os.getcwd(), (str(i + 1)))
-    document = pp.read_file(path_file)
-    document_sentences = pp.seg_into_senteces(document)
-    document_words = pp.seg_into_words(document_sentences)
-    words = pp.remove_stopwords(document_words)
-    terms_of_eachdoc = pp.remove_punctuation(words)
-    docs_terms.append(pp.reduce_tostem(terms_of_eachdoc))
-    terms_plus_frequencies.append(pp.count_frequencies(docs_terms[i]))
-    log_terms.append(pp.tlog_tf(terms_plus_frequencies[i]))
-    log_freq.append(pp.flog_tf(terms_plus_frequencies[i]))
+    document = pp._read_file(path_file)
+    document_sentences = pp._seg_into_senteces(document)
+    document_words = pp._seg_into_words(document_sentences)
+    words = pp._remove_stopwords(document_words)
+    terms_of_eachdoc = pp._remove_punctuation(words)
+    docs_terms.append(pp._reduce_tostem(terms_of_eachdoc))
+    terms_plus_frequencies.append(pp._count_frequencies(docs_terms[i]))
+    log_terms.append(pp._tlog_tf(terms_plus_frequencies[i]))
+    log_freq.append(pp._flog_tf(terms_plus_frequencies[i]))
 
     for j in range(len(terms_plus_frequencies[i])):
         terms.append(terms_plus_frequencies[i][j][0])
 
 final_terms = list(OrderedDict.fromkeys(terms))
 
-DF = pp.doc_frequency(final_terms, docs_terms)
-IDF = pp.idf(DF, len(docs_terms))
-TF_IDF = pp.tf_idf(log_terms, log_freq, IDF, docs_terms, final_terms)
+DF = pp._doc_frequency(final_terms, docs_terms)
+IDF = pp._idf(DF, len(docs_terms))
+TF_IDF = pp._tf_idf(log_terms, log_freq, IDF, docs_terms, final_terms)
 
 df_tfidf = pd.DataFrame(TF_IDF)
 df_tfidf['Sum TF-IDF'] = df_tfidf.sum(axis=1)
@@ -52,7 +52,7 @@ for t in range(MOST_RELEVANT):
     most_relevant.append(list_of_sum.index(max(list_of_sum)))
     '''print 'Most relevant', t+1, ':', final_terms[most_relevant[t]], list_of_sum[most_relevant[t]]'''
 
-    most_pafreq.append(clus.absolut_freq(terms_plus_frequencies, final_terms[most_relevant[t]]))
+    most_pafreq.append(clus._absolut_freq(terms_plus_frequencies, final_terms[most_relevant[t]]))
     commum = pd.DataFrame({final_terms[most_relevant[t]]: most_pafreq[t]})
     '''print commum'''
 
@@ -61,17 +61,16 @@ for t in range(MOST_RELEVANT):
 
 
 #Processa os novos termos
-foreign_words = clus.process_new_words(DOC_NEWWORDS)
+foreign_words = clus._process_new_words(DOC_NEWWORDS)
 for i, w in enumerate(foreign_words):
     if w in final_terms:
-        words_plus_frequencies = clus.absolut_freq(terms_plus_frequencies, w)
-        #print w, words_plus_frequencies
+        words_plus_frequencies = clus._absolut_freq(terms_plus_frequencies, w)
+        '''print w, words_plus_frequencies'''
 
 # Clusteriza os documentos
-data = pd.read_csv(DATA_CSV)
-data.as_matrix()
-print data
-model = KMeans(n_clusters=7)
+#data = pd.read_csv(DATA_CSV)
+#data.as_matrix()
+#model = KMeans(n_clusters=7).fit_predict(data)
 
 #model.fit(data)
 
