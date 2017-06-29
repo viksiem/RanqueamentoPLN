@@ -86,7 +86,7 @@ def tlog_tf(_doc_frequency):
     return t_docfrequency
 
 
-# OK - em quantos documentos o termo aparece
+# em quantos documentos o termo aparece
 def doc_frequency(_terms_of_all, _docterms):  # docterms = 20, terms of all = 1194
     df = []
     #dfd = []
